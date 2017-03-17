@@ -25,8 +25,6 @@ public class MainActivity extends AppCompatActivity {
 
     MyAdapter adapter;
     Lineup films;
-    public int n = 30;
-    public int sync = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
             WebAPI web = new WebAPI();
             try{
                 films =  web.run();
-                n = films.LineupItems.size();
+
             }
             catch(IOException e){
                 e.printStackTrace();
@@ -56,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Lineup lineup) {
-            sync=1;
             super.onPostExecute(lineup);
             adapter = new MyAdapter();
             list.setAdapter(adapter);
@@ -72,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         }
         @Override
         public int getCount() {
-            return n;
+            return films.LineupItems.size();
         }
 
         @Override
@@ -96,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
 
             TextView tv = (TextView) v.findViewById(R.id.rangee_text);
             ImageView iv = (ImageView) v.findViewById(R.id.rangee_image);
-            System.out.println(sync);
 
             String title = films.LineupItems.get(position).Title;
             String imgURL = films.LineupItems.get(position).ImageUrl;
