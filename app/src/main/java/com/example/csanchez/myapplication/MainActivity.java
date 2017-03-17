@@ -1,5 +1,6 @@
 package com.example.csanchez.myapplication;
 
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,22 +8,60 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.csanchez.myapplication.TouTv.Lineup;
+import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
+import java.net.URI;
 
 public class MainActivity extends AppCompatActivity {
 
     ListView list;
-    public final int n = 30;
-    MyAdapter adapter;
 
+    MyAdapter adapter;
+    Lineup films;
+    public int n = 30;
+    public int sync = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         list = (ListView)findViewById(R.id.listView);
-        adapter = new MyAdapter();
-        list.setAdapter(adapter);
+
+        RunAPI run = new RunAPI();
+        run.execute();
+
+    }
+
+    public class RunAPI extends AsyncTask<String, Object, Lineup>{
+
+        @Override
+        protected Lineup doInBackground(String... params) {
+            System.out.println("DOING BACKGROUND STUFF");
+            WebAPI web = new WebAPI();
+            try{
+                films =  web.run();
+                n = films.LineupItems.size();
+            }
+            catch(IOException e){
+                e.printStackTrace();
+            }
+            return films;
+        }
+
+        @Override
+        protected void onPostExecute(Lineup lineup) {
+            sync=1;
+            super.onPostExecute(lineup);
+            adapter = new MyAdapter();
+            list.setAdapter(adapter);
+
+        }
     }
 
     public class MyAdapter extends BaseAdapter{
@@ -56,7 +95,14 @@ public class MainActivity extends AppCompatActivity {
             }
 
             TextView tv = (TextView) v.findViewById(R.id.rangee_text);
-            tv.setText("Item "+((Integer) position).toString());
+            ImageView iv = (ImageView) v.findViewById(R.id.rangee_image);
+            System.out.println(sync);
+
+            String title = films.LineupItems.get(position).Title;
+            String imgURL = films.LineupItems.get(position).ImageUrl;
+
+            tv.setText(title);
+            Picasso.with(getApplicationContext()).load(imgURL).into(iv);
             return v;
         }
     }
