@@ -10,10 +10,40 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.csanchez.myapplication.MainActivity">
 
-    <ListView
-        android:id="@+id/listView"
+    <LinearLayout
+        android:id="@+id/line_layout_btns"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_emissions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Emissions" />
+
+        <Button
+            android:id="@+id/btn_films"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Films" />
+
+        <Button
+            android:id="@+id/btn_documentaires"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Documentaires" />
+
+        <Button
+            android:id="@+id/btn_episodes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Episodes" />
+
+    </LinearLayout>
 </RelativeLayout>
