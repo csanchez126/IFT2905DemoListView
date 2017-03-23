@@ -1,11 +1,13 @@
 package com.example.csanchez.myapplication;
 
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -86,6 +88,18 @@ public class LineupActivity extends AppCompatActivity{
                             .load(lineups[position].image)
                             .into(img);
                     return convertView;
+                }
+            });
+
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                    Intent intent = new Intent(LineupActivity.this, LineupPagerActivity.class);
+
+                    intent.putExtra("type", type);
+                    intent.putExtra("position", position);
+
+                    startActivity(intent);
                 }
             });
 
